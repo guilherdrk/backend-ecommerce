@@ -14,7 +14,7 @@ public class UserEntity {
     private UUID userId;
 
     @Column(name = "full_name")
-    private String fullNames;
+    private String fullName;
 
     @OneToOne
     @JoinColumn(name = "billing_address_id")
@@ -22,12 +22,12 @@ public class UserEntity {
 
     public UserEntity() {}
 
-    public String getFullNames() {
-        return fullNames;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullNames(String fullNames) {
-        this.fullNames = fullNames;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public UUID getUserId() {
