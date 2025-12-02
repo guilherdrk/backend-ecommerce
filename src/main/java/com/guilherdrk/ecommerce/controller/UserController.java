@@ -1,11 +1,13 @@
 package com.guilherdrk.ecommerce.controller;
 
 import com.guilherdrk.ecommerce.dto.CreateUserDTO;
+import com.guilherdrk.ecommerce.entities.UserEntity;
 import com.guilherdrk.ecommerce.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -23,5 +25,14 @@ public class UserController {
         var user = userService.createUser(createUserDTO);
 
         return ResponseEntity.created(URI.create("/users/" + user.getUserId())).build();
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<UserEntity> findById(@PathVariable("userId") UUID userId){
+        var user =userService.findById(userId);
+        return user.isPresent() ?
+                ResponseEntity.ok(user.get()) :
+                ResponseEntity.notFound().build();
+
     }
 }

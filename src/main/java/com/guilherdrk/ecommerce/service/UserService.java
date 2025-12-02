@@ -7,6 +7,9 @@ import com.guilherdrk.ecommerce.repository.BillingAddressRepository;
 import com.guilherdrk.ecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class UserService {
 
@@ -19,12 +22,10 @@ public class UserService {
     }
 
     public UserEntity createUser(CreateUserDTO dto){
-
         var billingAddress = new BillingAddresEntity();
         billingAddress.setAddress(dto.address());
         billingAddress.setNumber(dto.number());
         billingAddress.setComplement(dto.complement());
-
         var saveBillingAddress = billingAddressRepository.save(billingAddress);
 
         var entity = new UserEntity();
@@ -32,5 +33,9 @@ public class UserService {
         entity.setBillingAddress(saveBillingAddress);
 
         return userRepository.save(entity);
+    }
+
+    public Optional<UserEntity> findById(UUID userId) {
+        return userRepository.findById(userId);
     }
 }
