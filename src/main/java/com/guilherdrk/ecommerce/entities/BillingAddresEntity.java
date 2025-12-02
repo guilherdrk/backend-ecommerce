@@ -21,9 +21,8 @@ public class BillingAddresEntity {
     @Column(name = "complement")
     private String complement;
 
-    @OneToOne(mappedBy = "billingAddress")
-    private UserEntity user;
-
+//    @OneToOne(mappedBy = "billingAddress")
+//    private UserEntity user;
 
 
     public BillingAddresEntity() {}
@@ -60,11 +59,4 @@ public class BillingAddresEntity {
         this.complement = complement;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
 }
