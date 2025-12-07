@@ -2,6 +2,7 @@ package com.guilherdrk.ecommerce.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,9 +17,10 @@ public class UserEntity {
     @Column(name = "full_name")
     private String fullName;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "billing_address_id")
     private BillingAddresEntity billingAddress;
+
 
     public UserEntity() {}
 
