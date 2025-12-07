@@ -22,15 +22,16 @@ public class UserService {
     }
 
     public UserEntity createUser(CreateUserDTO dto){
+
         var billingAddress = new BillingAddresEntity();
         billingAddress.setAddress(dto.address());
         billingAddress.setNumber(dto.number());
         billingAddress.setComplement(dto.complement());
-        var saveBillingAddress = billingAddressRepository.save(billingAddress);
+//      var saveBillingAddress = billingAddressRepository.save(billingAddress);
 
         var entity = new UserEntity();
         entity.setFullName(dto.fullName());
-        entity.setBillingAddress(saveBillingAddress);
+        entity.setBillingAddress(billingAddress);
 
         return userRepository.save(entity);
     }
@@ -44,7 +45,7 @@ public class UserService {
         var user = userRepository.findById(userId);
         if (user.isPresent()){
             userRepository.deleteById(userId);
-            billingAddressRepository.deleteById(user.get().getBillingAddress().getBillingAddressId());
+//            billingAddressRepository.deleteById(user.get().getBillingAddress().getBillingAddressId());
         }
 
         return user.isPresent();
