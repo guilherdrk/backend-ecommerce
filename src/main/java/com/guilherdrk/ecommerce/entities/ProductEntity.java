@@ -20,6 +20,15 @@ public class ProductEntity {
     @Column(name = "price")
     private BigDecimal price;
 
+    @ManyToMany
+    @JoinTable(
+            name = "tb_product_tags",
+            uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "tag_id"}),
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<TagEntity> tags;
+
 
     public ProductEntity() {}
 
@@ -47,5 +56,11 @@ public class ProductEntity {
         this.price = price;
     }
 
+    public List<TagEntity> getTags() {
+        return tags;
+    }
 
+    public void setTags(List<TagEntity> tags) {
+        this.tags = tags;
+    }
 }
