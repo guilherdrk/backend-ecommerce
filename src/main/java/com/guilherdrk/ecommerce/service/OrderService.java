@@ -2,12 +2,15 @@ package com.guilherdrk.ecommerce.service;
 
 import com.guilherdrk.ecommerce.dto.CreateOrderDTO;
 import com.guilherdrk.ecommerce.dto.OrderItemDTO;
+import com.guilherdrk.ecommerce.dto.OrderSummaryDTO;
 import com.guilherdrk.ecommerce.entities.*;
 import com.guilherdrk.ecommerce.exception.CreateOrderException;
 import com.guilherdrk.ecommerce.repository.OrderItemRepository;
 import com.guilherdrk.ecommerce.repository.OrderRepository;
 import com.guilherdrk.ecommerce.repository.ProductRepository;
 import com.guilherdrk.ecommerce.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,7 +38,7 @@ public class OrderService {
 
         //1. Validade user
         var user = validateUser(dto);
-        //2. validate order Items]
+        //2. validate order Items
         var orderItems = validateOrderItems(order, dto);
         //3. Calculate order total
         var total = calculateOrderTotal(orderItems);
@@ -79,7 +82,6 @@ public class OrderService {
 
         return orderItemEntity;
     }
-
     private ProductEntity getProduct(Long producId){
         return productRepository.findById(producId)
                 .orElseThrow(() -> new CreateOrderException("product not found"));
@@ -90,5 +92,17 @@ public class OrderService {
                 .map(i -> i.getSalePrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
+    }
+
+    public Page<OrderSummaryDTO> findAll(Integer page, Integer pageSize) {
+        return orderRepository.findAll(PageRequest.of(page, pageSize))
+                .map(entity -> {
+                    return new OrderSummaryDTO(
+                            entity.getOrderId(),
+                            entity.getOrderDate(),
+                            entity.getUser().getUserId(),
+                            entity.getTotal()
+                    );
+                });
     }
 }
